@@ -1,0 +1,42 @@
+{% extends 'kto/layout.html' %}
+
+{% block content %}
+{% if task_list_name %}
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Task</th>
+                <th>Description</th>
+                <th>Completed?</th>
+                <th>Priority</th>
+                <th>Remove</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for task in task_list_name %}
+            <tr>
+                <td scope="row"><a href="{% url 'kto:detail' task.id %}">{{ task.task_name }}</a></td>
+                <td>{{ task.description }}</td>
+                <td>{{ task.completed }}</td>
+                <td>{{ task.priority }}</td>
+                <td><form action="{% url 'kto:delete' task.id %}" method="post">
+                {% csrf_token %}    
+                <input type="submit" value="Delete">
+                {% if messages %}
+                    <ul class="messages">
+                        {% for message in messages %}
+                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </form></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    
+{% else %}
+    <p>No tasks are available.</p>
+{% endif %}
+
+{% endblock %}
