@@ -1,16 +1,6 @@
 {% extends 'kto/layout.html' %}
 
 {% block content %}
-
-<!---<h1>{{ question.question_text }}</h1>
-<ul>
-{% for choice in question.choice_set.all %}
-    <li>{{ choice.choice_text }}</li>
-{% endfor %}
-</ul>
-
-<h1>{{ question.question_text }}</h1>
--->
 {% if error_message %}
 <p><strong>{{ error_message }}</strong></p>
 {% endif %}
