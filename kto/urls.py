@@ -8,4 +8,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('<int:pk>/', views.DetailView.as_view(), name='detail'),
     path('<int:task_id>/delete/', views.delete_task, name='delete'),
+    path('add/', views.add_task, name='add'),
 ]

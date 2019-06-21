@@ -21,6 +21,11 @@ class Choice(models.Model):
 
     def __str__(self):
         return self.choice_text
+        
+class TaskManager(models.Manager):
+    def create_task(self, task):
+        task = self.create(task_name=task)
+        return task
 
 class Task(models.Model):
     low = 0
@@ -36,5 +41,8 @@ class Task(models.Model):
     completed = models.BooleanField(default=False)
     priority = models.PositiveSmallIntegerField(default=normal, choices=priority_choices)
 
+    objects = TaskManager()
+
     def __str__(self):
         return self.task_name
+

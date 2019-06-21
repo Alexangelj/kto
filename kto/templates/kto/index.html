@@ -22,18 +22,18 @@
                 <td><form action="{% url 'kto:delete' task.id %}" method="post">
                 {% csrf_token %}    
                 <input type="submit" value="Delete">
-                {% if messages %}
-                    <ul class="messages">
-                        {% for message in messages %}
-                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-                        {% endfor %}
-                    </ul>
-                {% endif %}
             </form></td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
     
 {% else %}
     <p>No tasks are available.</p>

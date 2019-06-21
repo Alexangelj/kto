@@ -5,7 +5,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from .models import Question, Choice, Task
-from .forms import ListForm
+from .forms import TaskForm
 from django.contrib import messages
 from django.urls import reverse
 from django.shortcuts import get_object_or_404, render
@@ -25,6 +25,18 @@ class DetailView(generic.DetailView):
 class ResultsView(generic.DetailView):
     model = Question
     template_name = 'kto/results.html'
+    
+def add_task(request):
+    if request.method == 'POST':
+        task = TaskForm(request.POST)
+        if task.is_valid():
+            Task.objects.create_task(task)
+            all_tasks = Task.objects.all
+            messages.success(request, ('Task Added'))
+            return HttpResponseRedirect(reverse('kto:index'))
+    else:
+        task = TaskForm()
+    
 
 def delete_task(request, task_id):
     task = get_object_or_404(Task, pk=task_id)
