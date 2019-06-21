@@ -28,14 +28,26 @@ class ResultsView(generic.DetailView):
     
 def add_task(request):
     if request.method == 'POST':
-        task = TaskForm(request.POST)
-        if task.is_valid():
-            Task.objects.create_task(task)
-            all_tasks = Task.objects.all
+        form = TaskForm(request.POST)
+        if form.is_valid():
+            print("VALID")
+            task_post = form.save(commit=False)
+            data = request.POST.copy()
+            task_post.task_name = data.get('task_name')
+            task_post.description = data.get('description')
+            task_post.priority = data.get('priority')
+            form.save()
             messages.success(request, ('Task Added'))
             return HttpResponseRedirect(reverse('kto:index'))
+        print(form.errors)
+        print("NOT VALID")
+        messages.error(request, ('Data not valid. Did you fill out every form?'))
+        return HttpResponseRedirect(reverse('kto:index'), {'form': form})
     else:
-        task = TaskForm()
+        print("ELSE STATEMENT")
+        form = TaskForm()
+        return HttpResponseRedirect(reverse('kto:index'), {'form': form})
+
     
 
 def delete_task(request, task_id):

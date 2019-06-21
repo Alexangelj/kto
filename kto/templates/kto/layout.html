@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -14,9 +15,10 @@
       <a class="navbar-brand"> K.T.O Task Board </a>
         <form class="form-inline" action="{% url 'kto:add' %}" method="POST">
           {% csrf_token %}
-          {{ form }}
-          <input class="form-control mr-sm-2" type="text" placeholder="Task" aria-label="Task">
-          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">+ Add Task</button>
+            <input class="form-control mr-sm-2" type="text" placeholder="Task" aria-label="Task" name="task_name" value="{{ task.id }}">
+            <input class="form-control mr-sm-2" type="text" placeholder="Description" aria-label="Task" name="description" value="{{ task.id }}">
+            <input class="form-control mr-sm-2" type="text" placeholder="Priority" aria-label="Task" name="priority" value="{{ task.id }}">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">+ Add Task</button>
         </form>
     </nav>
     <div class="container">

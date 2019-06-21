@@ -1,11 +1,8 @@
-from django import forms
+from django.forms import ModelForm
 from .models import Task
+from django import forms
 
-class TaskForm(forms.Form):
+class TaskForm(forms.ModelForm):
     class Meta:
         model = Task
-        fields= ["task_name", 'description', 'completed', 'priority']
-
-"""
-    task_name = forms.CharField(label='Task', max_length=150)
-"""
+        fields = ['task_name', 'description', 'completed', 'priority']

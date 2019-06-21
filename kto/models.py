@@ -23,8 +23,8 @@ class Choice(models.Model):
         return self.choice_text
         
 class TaskManager(models.Manager):
-    def create_task(self, task):
-        task = self.create(task_name=task)
+    def create_task(self, task, desc, prior):
+        task = self.create(task_name=task, description=desc, priority=prior)
         return task
 
 class Task(models.Model):
