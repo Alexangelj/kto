@@ -4,12 +4,13 @@ from django.shortcuts import render
 
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
-from .models import Question, Choice, Task
-from .forms import TaskForm
+from .models import Question, Choice, Task, TaskManager
+from .forms import TaskForm, DateTimeForm
 from django.contrib import messages
 from django.urls import reverse
 from django.shortcuts import get_object_or_404, render
 from django.views import generic
+from datetime import datetime
 
 class IndexView(generic.ListView):
     template_name = 'kto/index.html'
@@ -48,13 +49,45 @@ def add_task(request):
         form = TaskForm()
         return HttpResponseRedirect(reverse('kto:index'), {'form': form})
 
-    
-
 def delete_task(request, task_id):
     task = get_object_or_404(Task, pk=task_id)
     task.delete()
     messages.success(request, ('Task Deleted'))
     return HttpResponseRedirect(reverse('kto:index'))
+
+def complete(request, task_id):
+    task = get_object_or_404(Task, pk=task_id)
+    if task.completed:
+        task.completed = False
+    else:
+        task.completed = True
+    task.save()
+    messages.success(request, ('Task Completed'))
+    return HttpResponseRedirect(reverse('kto:index'))
+
+def set_time(request, task_id):
+    task = get_object_or_404(Task, pk=task_id)
+    if request.method == 'POST':
+        form = DateTimeForm(request.POST)
+        print(form.data)
+        if 'start_date' in form.data:
+            if form.is_valid():
+                print("VALID")
+                set_time = form.save(commit=False)
+                form.save()
+                messages.success(request, ('Time added'))
+                return HttpResponseRedirect(reverse('kto:detail'))
+            print(form.errors)
+            print("NOT VALID")
+            messages.error(request, ('Data not valid. Did you fill out every form?'))
+            return HttpResponseRedirect(reverse('kto:detail'))
+        else:
+            print('START DATE NOT IN FORM.DATA')
+            return HttpResponseRedirect(reverse('kto:detail'))
+    else:
+        print("ELSE STATEMENT")
+        form = TaskForm()
+        return HttpResponseRedirect(reverse('kto:detail'))
 """
 def vote(request, question_id):
     question = get_object_or_404(Question, pk=question_id)

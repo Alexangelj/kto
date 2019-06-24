@@ -6,7 +6,8 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+    <!-- CSS LINK -->
+    <link rel="stylesheet" href="main.css">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   </head>
@@ -21,12 +22,28 @@
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">+ Add Task</button>
         </form>
     </nav>
-    <div class="container">
+    <div class="container-fluid w-100 h-100">
         {% block content %}
         {% endblock %}
     <br>
     <a href="/admin">Admin Login</a>
     </div>
+    {% if messages %}
+    <div class="container-fluid w-100 h-100">
+      <div class="alert alert-primary alert-dismissible fade show" role="alert" 
+        style="transition-delay: 1000ms; width: 15%; justify-content: center; align-content: center;">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+          <span class="sr-only">Close</span>
+      </button>
+      <ul class="messages">
+              {% for message in messages %}
+              <li {% if message.tags %}class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+              {% endfor %}
+          </ul>
+  </div> 
+    </div>
+    {% endif %}
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

@@ -26,6 +26,9 @@ class TaskManager(models.Manager):
     def create_task(self, task, desc, prior):
         task = self.create(task_name=task, description=desc, priority=prior)
         return task
+    def complete_task(self, task_id):
+        self.completed = True
+        return self.completed
 
 class Task(models.Model):
     low = 0
@@ -40,6 +43,8 @@ class Task(models.Model):
     description = models.CharField(max_length=200)
     completed = models.BooleanField(default=False)
     priority = models.PositiveSmallIntegerField(default=normal, choices=priority_choices)
+    start_date = models.DateTimeField(auto_now=False, auto_now_add=False)
+    end_date = models.DateTimeField(auto_now=False, auto_now_add=False)
 
     objects = TaskManager()
 

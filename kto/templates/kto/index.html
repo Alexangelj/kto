@@ -7,21 +7,27 @@
             <tr>
                 <th>Task</th>
                 <th>Description</th>
-                <th>Completed?</th>
+                <th>Complete</th>
                 <th>Priority</th>
                 <th>Remove</th>
             </tr>
         </thead>
         <tbody>
         {% for task in task_list_name %}
-            <tr>
+            <tr {% if task.completed %}style="text-decoration: line-through;"{% endif %}>
+            <span {% if task.completed %}style="text-decoration: line-through;"{% endif %}>
                 <td scope="row"><a href="{% url 'kto:detail' task.id %}">{{ task.task_name }}</a></td>
                 <td>{{ task.description }}</td>
-                <td>{{ task.completed }}</td>
+                <td><form action="{% url 'kto:complete' task.id %}" method="post">
+                    {% csrf_token %}
+                    <input type="checkbox" onChange="this.form.submit()" {% if task.completed %}checked{% endif %}>
+                </form>
+                </td>
                 <td>{{ task.priority }}</td>
                 <td><form action="{% url 'kto:delete' task.id %}" method="post">
                 {% csrf_token %}    
                 <input type="submit" value="Delete">
+            </span>
             </form></td>
             </tr>
         {% endfor %}
@@ -31,13 +37,22 @@
 {% else %}
     <p>No tasks are available.</p>
 {% endif %}
-
+<!--
 {% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-        {% endfor %}
-    </ul>
+<div style="position: relative;">
+    <div class="alert alert-primary alert-dismissible fade show" role="alert" 
+         style="transition-delay: 1000ms; position: absolute; bottom: 5px;">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            <span class="sr-only">Close</span>
+        </button>
+        <ul class="messages">
+                {% for message in messages %}
+                <li {% if message.tags %}class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+    </div>
+</div>
 {% endif %}
-
+-->
 {% endblock %}

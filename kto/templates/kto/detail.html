@@ -9,8 +9,23 @@
 <div class="card">
     <img class="card-img-top" src="holder.js/100x180/" alt="">
     <div class="card-body">
-        <h4 class="card-title">{{ task.description }}</h4>
-        <p class="card-text">Text</p>
+        <h4 class="card-title">{{ task.task_name }}</h4>
+        <p class="card-text">{{ task.description }}</p>
+        {{ form.date }}
+        <form action="{% url 'kto:set_time' task.id %}" method="POST">
+            <label for="start_date">Start:</label>
+            <input type="datetime-local" id="start_date"
+                   name="start_date" value="2018-06-12T19:30"
+                   min="1900-06-07T00:00" max="2100-06-14T00:00">
+            <label for="end_date">End:</label>
+            <input type="datetime-local" id="end_date"
+                   name="end_date" value="2018-06-12T19:30"
+                   min="1900-06-07T00:00" max="2100-06-14T00:00">
+            {% csrf_token %}
+            <input type="submit" placeholder="Set">
+        </form>
+        <p class="card-text">{{ task.start_time|date:'M-D-Y H:i' }}</p>
+        <p class="card-text">{{ task.end_time }}</p>
     </div>
 </div>
 
